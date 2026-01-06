@@ -1,0 +1,39 @@
+{
+  "name": "Remal",
+  "title": "Software Engineering & R&D",
+  "description": "Building technical solutions that empower both IT professionals and non-technical users.",
+  "email": "team@remal.dev",
+  "github": "remaldev",
+  "linkedin": "company/remaldev",
+  "twitter": "remaldev",
+  "profileImage": "/assets/PROFILE.webp",
+  "siteUrl": "https://tadwin.remal.dev",
+  "author": "Abdellah Allali",
+  "ogImage": "/assets/OG-IMAGE.jpg",
+  "wordsPerMinute": 200,
+  "socialLinks": {
+    "github": "https://github.com/{username}",
+    "twitter": "https://twitter.com/{username}",
+    "linkedin": "https://linkedin.com/{username}"
+  },
+  "sections": ["blog", "papers", "projects"],
+  "showSponsorBlocks": false,
+  "assets": {
+    "staticFiles": [
+      "style.css"
+    ],
+    "metaFiles": [
+      "favicon.ico",
+      "favicon-*.png",
+      "favicon.svg",
+      "site.webmanifest",
+      "robots.txt"
+    ]
+  },
+  "colors": {
+    "background": "#E9E8E3",
+    "text": "black",
+    "textSecondary": "#5F5F5F",
+    "accent": "#42586F"
+  }
+}

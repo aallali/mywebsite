@@ -1,0 +1,50 @@
+services:
+  # Development mode - hot reload
+  dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    profiles:
+      - dev
+    ports:
+      - "3013:3013"
+    volumes:
+      - ./content:/app/content
+      - ./templates:/app/templates
+      - ./src:/app/src
+      - /app/src/node_modules
+      - ./config.json:/app/config.json
+      - ./public:/app/public
+    environment:
+      - NODE_ENV=dev
+    command: sh -c "cd /app/src && npm run build && (npm run serve &) && npm run dev"
+
+  # Production mode - build once and serve
+  prod:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    profiles:
+      - prod
+    networks:
+      - global-net
+    expose:
+      - "3013"
+    restart: always
+    environment:
+      - NODE_ENV=prod
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tadwin.rule=Host(`tadwin.remal.dev`)"
+      - "traefik.http.routers.tadwin.entrypoints=websecure"
+      - "traefik.http.routers.tadwin.tls.certresolver=letsencrypt"
+      - "traefik.http.services.tadwin.loadbalancer.server.port=3013"
+      # Optional: HTTP to HTTPS redirect
+      - "traefik.http.routers.tadwin-http.rule=Host(`tadwin.remal.dev`)"
+      - "traefik.http.routers.tadwin-http.entrypoints=web"
+      - "traefik.http.routers.tadwin-http.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+networks:
+  global-net:
+    external: true

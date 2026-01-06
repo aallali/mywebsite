@@ -1,0 +1,12 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+RUN npm install -g nodemon
+COPY src/package*.json ./src/
+RUN cd src && npm install
+
+EXPOSE 3013
+
+# Watch for changes and rebuild
+CMD ["sh", "-c", "cd /app/src && npm run build && (npm run serve &) && npm run dev"]

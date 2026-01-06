@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Primary Meta Tags -->
+  <title>{{title}}</title>
+  <meta name="title" content="{{title}}" />
+  <meta name="description" content="{{description}}" />
+  <meta name="author" content="{{author}}" />
+  {{keywords}}
+  {{canonical}}
+
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{{appleTouchIcon}}" />
+  <link rel="manifest" href="{{webManifest}}" />
+
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="{{ogType}}" />
+  <meta property="og:url" content="{{url}}" />
+  <meta property="og:title" content="{{title}}" />
+  <meta property="og:description" content="{{description}}" />
+  {{ogLocale}}
+  {{ogImage}}
+  {{ogImageWidth}}
+  {{ogImageHeight}}
+  <meta property="og:site_name" content="{{siteName}}" />
+  {{publishDate}}
+  {{modifiedDate}}
+  {{articleAuthor}}
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="{{url}}" />
+  <meta name="twitter:title" content="{{title}}" />
+  <meta name="twitter:description" content="{{description}}" />
+  {{twitterImage}}
+  {{twitterCreator}}
+
+  <!-- Structured Data -->
+  {{structuredData}}
+
+  <!-- CSS Variables -->
+  {{cssVars}}
+
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+  <main>
+    {{content}}
+  </main>
+  <footer class="site-footer">
+    <p>&copy; {{year}} &middot; Powered by <a href="https://github.com/remaldev/tadwin" target="_blank"
+        rel="noopener">تدوين</a></p>
+  </footer>
+  <button id="back-to-top" class="back-to-top" aria-label="Back to top">↑</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const toc = document.querySelector('.toc');
+      if (toc) {
+        const heading = toc.querySelector('h2');
+        if (heading) {
+          heading.addEventListener('click', function () {
+            toc.classList.toggle('collapsed');
+          });
+        }
+      }
+
+      const backToTopBtn = document.getElementById('back-to-top');
+      window.addEventListener('scroll', function () {
+        if (window.pageYOffset > 300) {
+          backToTopBtn.classList.add('visible');
+        } else {
+          backToTopBtn.classList.remove('visible');
+        }
+      });
+
+      backToTopBtn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+
+</html>

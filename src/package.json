@@ -1,0 +1,25 @@
+{
+  "name": "@remaldev/tadwin",
+  "version": "1.0.0",
+  "description": "A minimalist static site generator for portfolio websites",
+  "scripts": {
+    "build": "ts-node build.ts",
+    "dev": "nodemon --watch ../content --watch ../templates --watch build.ts --watch ../config.json --ext ts,json,md,html,css --exec ts-node build.ts",
+    "serve": "npx serve ../public -p 3013"
+  },
+  "keywords": ["static-site-generator", "portfolio", "blog", "minimalist"],
+  "author": "Abdellah Allali",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "gray-matter": "4.0.3",
+    "highlight.js": "11.11.1",
+    "markdown-it": "14.1.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "14.1.2",
+    "@types/node": "25.0.3",
+    "ts-node": "10.9.2",
+    "typescript": "5.9.3"
+  }
+}
