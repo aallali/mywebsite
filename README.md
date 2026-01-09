@@ -9,10 +9,8 @@ A minimalist, forkable static site generator by **[Remal](https://remal.dev)**. 
 [![Node.js](https://img.shields.io/badge/Node.js-25.0.3-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 
 ## Preview
+![@remaldev/tadwin Blog](.github/tadwin-preview.gif)
 
-| Home Page | Blog List |
-|:---:|:---:|
-|![@remaldev/tadwin Blog](.github/blog.png) | ![@remaldev/tadwin Home](.github/home.png) |
 
 ## Philosophy
 
