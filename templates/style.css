@@ -11,11 +11,11 @@
     --alert-note-bg: #ddf4ff;
     --alert-note-border: #54aeff;
     --alert-note-text: #0969da;
-    
+
     --alert-info-bg: #dafbe1;
     --alert-info-border: #41ae60;
     --alert-info-text: #145226;
-    
+
     --alert-warning-bg: #fff8c5;
     --alert-warning-border: #d4a72c;
     --alert-warning-text: #9a6700;
@@ -24,7 +24,7 @@
     --alert-danger-text: #cf222e;
 }
 
- 
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     font-size: 16px;
@@ -194,7 +194,7 @@ table th {
 }
 
 /* Images */
-img {
+img:not(.profile-img) {
     max-width: 100%;
     box-sizing: content-box;
     background-color: transparent;
@@ -299,13 +299,13 @@ input.task-list-item-checkbox {
 .danger-content ul,
 .danger-content ol {
     margin-bottom: 8px;
-    padding-left: 1.5em; 
+    padding-left: 1.5em;
 }
 
-.warning-content li + li,
-.info-content li + li,
-.tip-content li + li,
-.danger-content li + li {
+.warning-content li+li,
+.info-content li+li,
+.tip-content li+li,
+.danger-content li+li {
     margin-top: 4px;
 }
 
@@ -343,7 +343,8 @@ input.task-list-item-checkbox {
     background-color: var(--bg);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 12px; /* Reduced padding */
+    padding: 12px;
+    /* Reduced padding */
     display: inline-block;
     margin-bottom: 20px;
     font-size: 13px;
@@ -351,7 +352,8 @@ input.task-list-item-checkbox {
 }
 
 .toc h2 {
-    font-size: 1em; /* Smaller header */
+    font-size: 1em;
+    /* Smaller header */
     margin: 0 0 8px 0;
     padding: 0;
     border: none;
@@ -362,7 +364,7 @@ input.task-list-item-checkbox {
     user-select: none;
 }
 
- /* Hide/Show toggle */
+/* Hide/Show toggle */
 .toc h2::after {
     content: "[hide]";
     font-size: 11px;
@@ -386,31 +388,31 @@ input.task-list-item-checkbox {
     counter-reset: toc-counter;
 }
 
-.toc > ul > li {
+.toc>ul>li {
     counter-increment: toc-counter;
     margin: 4px 0;
     line-height: 1.4;
 }
 
-.toc > ul > li::before {
+.toc>ul>li::before {
     content: counter(toc-counter) ". ";
     color: var(--text-secondary);
     font-weight: 600;
     margin-right: 4px;
 }
 
-.toc > ul > li > ul {
+.toc>ul>li>ul {
     counter-reset: toc-sub-counter;
     padding-left: 16px;
     margin-top: 4px;
 }
 
-.toc > ul > li > ul > li {
+.toc>ul>li>ul>li {
     counter-increment: toc-sub-counter;
     margin: 2px 0;
 }
 
-.toc > ul > li > ul > li::before {
+.toc>ul>li>ul>li::before {
     content: counter(toc-counter) "." counter(toc-sub-counter) " ";
     color: var(--text-secondary);
     margin-right: 4px;
@@ -707,18 +709,31 @@ input.task-list-item-checkbox {
 
 /* Home profile adjustments */
 .home {
-    max-width: 700px;
+    max-width: fit-content;
     margin: 0 auto;
     text-align: center;
 }
 
-.profile-image {
+.profile-wrap {
     width: 210px;
-    height: 300px;
+    height: 390px;
+    overflow: hidden;
     border-radius: 14px;
-    object-fit: cover;
-    margin-bottom: 1rem;
-    /* border: 2px solid var(--accent); */
+    position: relative;
+    margin: 0 auto;
+}
+
+.profile-img {
+    position: absolute;
+    bottom: 0;
+    /* anchor bottom */
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    /* move Y here */
+    width: 100%;
+    height: auto;
+    /* keep ratio */
+    display: block;
 }
 
 .profile-name {
@@ -735,7 +750,7 @@ input.task-list-item-checkbox {
     font-weight: 300;
 }
 
- 
+
 .sections ul {
     list-style: none;
     padding: 0;
