@@ -36,7 +36,6 @@
   {{publishDate}}
   {{modifiedDate}}
   {{articleAuthor}}
-
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="{{url}}" />
@@ -44,7 +43,6 @@
   <meta name="twitter:description" content="{{description}}" />
   {{twitterImage}}
   {{twitterCreator}}
-
   <!-- Structured Data -->
   {{structuredData}}
 
@@ -87,6 +85,23 @@
       backToTopBtn.addEventListener('click', function () {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
+
+      // Share button - copy link functionality
+      const copyLinkBtn = document.querySelector('.copy-link');
+      if (copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', function () {
+          const url = this.getAttribute('data-url');
+          navigator.clipboard.writeText(url).then(function () {
+            copyLinkBtn.classList.add('copied');
+            const originalText = copyLinkBtn.innerHTML;
+            copyLinkBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>Copied!';
+            setTimeout(function () {
+              copyLinkBtn.classList.remove('copied');
+              copyLinkBtn.innerHTML = originalText;
+            }, 2000);
+          });
+        });
+      }
     });
   </script>
 </body>
