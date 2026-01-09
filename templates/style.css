@@ -338,6 +338,20 @@ input.task-list-item-checkbox {
     align-items: center;
 }
 
+.author-link {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.author-link:hover {
+    text-decoration: underline;
+}
+
+.author-role {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
 /* TOC */
 .toc {
     background-color: var(--bg);

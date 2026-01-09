@@ -23,6 +23,12 @@ interface Config {
     twitter: string;
     linkedin: string;
   };
+  authors?: {
+    [key: string]: {
+      name: string;
+      url: string;
+    };
+  };
   sections: string[];
   showSponsorBlocks: boolean;
   assets: {
@@ -46,6 +52,7 @@ interface Post {
   readingTime: number;
   image?: string;
   author?: string;
+  authorId?: string;
   tags?: string[];
   excerpt?: string;
 }
@@ -546,11 +553,33 @@ function buildFile(filePath: string): Post | null {
 
   const dateTime = formatDateTime(data.date);
 
+  // Resolve author from authorId
+  let authorData = null;
+  let authorName = data.author || config.author;
+
+  if (data.author && config.authors && config.authors[data.author]) {
+    authorData = config.authors[data.author];
+    authorName = authorData.name;
+  } else if (!data.author) {
+    // Default to owner with LinkedIn
+    const linkedinUrl = config.socialLinks.linkedin.replace("{username}", config.linkedin);
+    authorData = {
+      name: config.name,
+      url: linkedinUrl,
+    };
+    authorName = config.name;
+  }
+
+  const authorMeta = authorData
+    ? `<span class="separator">•</span><span class="author-info">By <a href="${authorData.url}" class="author-link" target="_blank" rel="noopener">${authorData.name}</a></span>`
+    : "";
+
   const page = render(PAGE, {
     title: data.title,
     date: dateTime.date,
     datetime: dateTime.time,
     modified: modifiedMeta,
+    author: authorMeta,
     toc,
     body,
     type: data.type,
@@ -574,7 +603,7 @@ function buildFile(filePath: string): Post | null {
         date: data.date,
         modified: data.modified,
         image: data.image,
-        author: data.author,
+        author: authorName,
         tags: data.tags,
         excerpt: data.excerpt,
       },
@@ -595,7 +624,8 @@ function buildFile(filePath: string): Post | null {
     path: relPath,
     readingTime,
     image: data.image,
-    author: data.author,
+    author: authorName,
+    authorId: data.author,
     tags: data.tags,
     excerpt: data.excerpt,
   };

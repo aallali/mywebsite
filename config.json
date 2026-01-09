@@ -10,6 +10,12 @@
   "siteUrl": "https://allali.me",
   "author": "Abdellah Allali",
   "ogImage": "/assets/OG-IMAGE.jpg",
+  "authors": {
+    "abdellah": {
+      "name": "Abdellah Allali",
+      "url": "https://linkedin.com/in/aallali"
+    }
+  },
   "wordsPerMinute": 200,
   "socialLinks": {
     "github": "https://github.com/{username}",
