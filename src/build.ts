@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
@@ -83,6 +84,13 @@ const CONTENT_DIR = "../content";
 const OUTPUT_DIR = "../public";
 const TEMPLATES_DIR = "../templates";
 
+const cssContent = fs.readFileSync(`${TEMPLATES_DIR}/style.css`, "utf8");
+const cssHash = crypto
+  .createHash("md5")
+  .update(cssContent)
+  .digest("hex")
+  .substring(0, 8);
+
 function escapeHtml(str: string): string {
   return str
     .replace(/&/g, "&amp;")
@@ -96,41 +104,68 @@ const md = new MarkdownIt({
   html: true,
   linkify: true,
   typographer: true,
-  highlight: (str: string, lang: string): string => {
-    // Handle custom block types - render as text paragraphs, not code
-    if (lang === "warning") {
-      const content = str
-        .trim()
-        .split("\n")
-        .map((line) => `<p>${line}</p>`)
-        .join("");
-      return `<div class="warning-block"><div class="warning-title">⚠️ Warning</div><div class="warning-content">${content}</div></div>`;
-    }
-    if (lang === "info") {
-      const content = str
-        .trim()
-        .split("\n")
-        .map((line) => `<p>${line}</p>`)
-        .join("");
-      return `<div class="info-block"><div class="info-title">ℹ️ Info</div><div class="info-content">${content}</div></div>`;
-    }
-    if (lang === "tip") {
-      const content = str
-        .trim()
-        .split("\n")
-        .map((line) => `<p>${line}</p>`)
-        .join("");
-      return `<div class="tip-block"><div class="tip-title">💡 Tip</div><div class="tip-content">${content}</div></div>`;
-    }
-    if (lang === "danger") {
-      const content = str
-        .trim()
-        .split("\n")
-        .map((line) => `<p>${line}</p>`)
-        .join("");
-      return `<div class="danger-block"><div class="danger-title">🚨 Danger</div><div class="danger-content">${content}</div></div>`;
+});
+
+// Custom Task List Plugin
+md.core.ruler.push("task_lists", (state) => {
+  const tokens = state.tokens;
+  for (let i = 2; i < tokens.length; i++) {
+    if (tokens[i].type !== "inline" || !tokens[i].content) {
+      continue;
     }
 
+    const content = tokens[i].content;
+    const isTaskItem = content.startsWith("[ ] ") || content.startsWith("[x] ");
+
+    if (isTaskItem) {
+      const isChecked = content.startsWith("[x] ");
+
+      // Remove the marker from the content
+      tokens[i].content = content.slice(4);
+      if (tokens[i].children) {
+        tokens[i].children![0].content =
+          tokens[i].children![0].content.slice(4);
+      }
+
+      // Create checkbox token using state.Token constructor
+      const checkboxToken = new state.Token("html_inline", "", 0);
+      checkboxToken.content = `<input type="checkbox" disabled ${
+        isChecked ? 'checked=""' : ""
+      } class="task-list-item-checkbox"> `;
+
+      // Insert checkbox before the text
+      if (tokens[i].children) {
+        tokens[i].children!.unshift(checkboxToken);
+      }
+
+      // Find parent list item and add class
+      let j = i - 1;
+      while (j >= 0) {
+        if (tokens[j].type === "list_item_open") {
+          const cls = tokens[j].attrGet("class") || "";
+          tokens[j].attrSet("class", `${cls} task-list-item`.trim());
+          break;
+        }
+        j--;
+      }
+
+      // Find parent unordered list and add class
+      while (j >= 0) {
+        if (tokens[j].type === "bullet_list_open") {
+          const cls = tokens[j].attrGet("class") || "";
+          if (!cls.includes("contains-task-list")) {
+            tokens[j].attrSet("class", `${cls} contains-task-list`.trim());
+          }
+          break;
+        }
+        j--;
+      }
+    }
+  }
+});
+
+md.set({
+  highlight: (str: string, lang: string): string => {
     // Regular code highlighting
     if (lang && hljs.getLanguage(lang)) {
       try {
@@ -142,6 +177,43 @@ const md = new MarkdownIt({
     return `<pre><code class="hljs">${escapeHtml(str)}</code></pre>`;
   },
 });
+
+md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+  const token = tokens[idx];
+  const info = token.info ? md.utils.unescapeAll(token.info).trim() : "";
+  const lang = info.split(/\s+/g)[0];
+
+  if (["warning", "info", "tip", "danger"].includes(lang)) {
+    const iconMap: Record<string, string> = {
+      warning: "⚠️",
+      info: "ℹ️",
+      tip: "💡",
+      danger: "🚨",
+    };
+    const title = lang.charAt(0).toUpperCase() + lang.slice(1);
+    return `<div class="${lang}-block"><div class="${lang}-title">${
+      iconMap[lang]
+    } ${title}</div><div class="${lang}-content">${md.render(
+      token.content
+    )}</div></div>`;
+  }
+
+  // Standard fence rendering logic
+  let highlighted = "";
+  if (options.highlight) {
+    highlighted =
+      options.highlight(token.content, lang, "") ||
+      md.utils.escapeHtml(token.content);
+  } else {
+    highlighted = md.utils.escapeHtml(token.content);
+  }
+
+  if (highlighted.indexOf("<pre") === 0) {
+    return `${highlighted}\n`;
+  }
+
+  return `<pre><code${self.renderAttrs(token)}>${highlighted}</code></pre>\n`;
+};
 
 md.renderer.rules.heading_open = (tokens, idx) => {
   const token = tokens[idx];
@@ -219,7 +291,7 @@ function calculateReadingTime(text: string) {
 
 function slugify(filename: string) {
   return filename
-    .replace(/^\d{4}-\d{2}-\d{2}-/, "")
+    .replace(/^\d{4}[-_]\d{2}[-_]\d{2}[-_]/, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
@@ -388,6 +460,7 @@ function generateSEO(data: SEOData, fullUrl: string, isArticle = false) {
     articleAuthor: "",
     structuredData: "",
     cssVars,
+    cssHash,
   };
 
   // For articles: only include image if post explicitly defines one
@@ -482,6 +555,7 @@ function buildFile(filePath: string): Post | null {
     body,
     type: data.type,
     readingTime: readingTime.toString(),
+    url: fullUrl,
     image: data.image
       ? `<img src="${data.image}" alt="${data.title}" style="max-width: 100%; max-height: 400px; display: block; margin: 0 auto 1.5rem auto; border-radius: 4px;" />`
       : "",
@@ -639,6 +713,12 @@ ${urls
   fs.writeFileSync(`${OUTPUT_DIR}/sitemap.xml`, xml);
 }
 
+function generateRobotsTxt() {
+  const template = fs.readFileSync(`${TEMPLATES_DIR}/robots.txt`, "utf-8");
+  const robotsTxt = template.replace(/{{siteUrl}}/g, config.siteUrl);
+  fs.writeFileSync(`${OUTPUT_DIR}/robots.txt`, robotsTxt);
+}
+
 // Build
 if (process.env.NODE_ENV !== "dev") {
   fs.rmSync(OUTPUT_DIR, { recursive: true, force: true });
@@ -712,3 +792,4 @@ fs.writeFileSync(`${OUTPUT_DIR}/index.html`, mainHtml);
 
 // Generate SEO files
 generateSitemap(posts);
+generateRobotsTxt();

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tadwin.remal.dev/sitemap.xml
+Sitemap: {{siteUrl}}/sitemap.xml

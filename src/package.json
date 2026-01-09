@@ -7,14 +7,20 @@
     "dev": "nodemon --watch ../content --watch ../templates --watch build.ts --watch ../config.json --ext ts,json,md,html,css --exec ts-node build.ts",
     "serve": "npx serve ../public -p 3013"
   },
-  "keywords": ["static-site-generator", "portfolio", "blog", "minimalist"],
+  "keywords": [
+    "static-site-generator",
+    "portfolio",
+    "blog",
+    "minimalist"
+  ],
   "author": "Abdellah Allali",
   "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "gray-matter": "4.0.3",
     "highlight.js": "11.11.1",
-    "markdown-it": "14.1.0"
+    "markdown-it": "14.1.0",
+    "markdown-it-task-lists": "^2.1.1"
   },
   "devDependencies": {
     "@types/markdown-it": "14.1.2",
