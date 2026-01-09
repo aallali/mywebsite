@@ -555,6 +555,7 @@ function buildFile(filePath: string): Post | null {
     body,
     type: data.type,
     readingTime: readingTime.toString(),
+    url: fullUrl,
     image: data.image
       ? `<img src="${data.image}" alt="${data.title}" style="max-width: 100%; max-height: 400px; display: block; margin: 0 auto 1.5rem auto; border-radius: 4px;" />`
       : "",
@@ -712,6 +713,12 @@ ${urls
   fs.writeFileSync(`${OUTPUT_DIR}/sitemap.xml`, xml);
 }
 
+function generateRobotsTxt() {
+  const template = fs.readFileSync(`${TEMPLATES_DIR}/robots.txt`, "utf-8");
+  const robotsTxt = template.replace(/{{siteUrl}}/g, config.siteUrl);
+  fs.writeFileSync(`${OUTPUT_DIR}/robots.txt`, robotsTxt);
+}
+
 // Build
 if (process.env.NODE_ENV !== "dev") {
   fs.rmSync(OUTPUT_DIR, { recursive: true, force: true });
@@ -785,3 +792,4 @@ fs.writeFileSync(`${OUTPUT_DIR}/index.html`, mainHtml);
 
 // Generate SEO files
 generateSitemap(posts);
+generateRobotsTxt();

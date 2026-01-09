@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://allali.me/sitemap.xml
+Sitemap: {{siteUrl}}/sitemap.xml
