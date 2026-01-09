@@ -374,12 +374,22 @@ function generateTOC(content: string): { toc: string; content: string } {
   const headings: Array<{ level: number; text: string; id: string }> = [];
   const headingRegex = /^(#{2,3})\s+(.+)$/gm;
   let match: RegExpExecArray | null;
+  const idCounts: Record<string, number> = {};
 
   match = headingRegex.exec(content);
   while (match !== null) {
     const level = match[1].length;
     const text = match[2];
-    const id = slugifyHeading(text);
+    let id = slugifyHeading(text);
+    
+    // Make IDs unique by appending counter if duplicate
+    if (idCounts[id] !== undefined) {
+      idCounts[id]++;
+      id = `${id}-${idCounts[id]}`;
+    } else {
+      idCounts[id] = 0;
+    }
+    
     headings.push({ level, text, id });
     match = headingRegex.exec(content);
   }
@@ -532,7 +542,7 @@ function generateSEO(data: SEOData, fullUrl: string, isArticle = false) {
   return seo;
 }
 
-function buildFile(filePath: string): Post | null {
+function buildFile(filePath: string, allPosts?: Post[]): Post | null {
   const { data, content } = matter(fs.readFileSync(filePath, "utf8"));
 
   if (data.active === false) return null;
@@ -574,6 +584,21 @@ function buildFile(filePath: string): Post | null {
     ? `<span class="separator">•</span><span class="author-info">By <a href="${authorData.url}" class="author-link" target="_blank" rel="noopener">${authorData.name}</a></span>`
     : "";
 
+  // Generate more_articles with other articles
+  let more_articles_html = "";
+  if (allPosts && allPosts.length > 0) {
+    const otherPosts = allPosts
+      .filter(p => p.path !== relPath && p.type === data.type)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    
+    if (otherPosts.length > 0) {
+      const more_articles_items = otherPosts
+        .map(p => `<li><a href="${p.path}">${p.title}</a><div class="more_articles-meta">${p.readingTime} min read</div></li>`)
+        .join("");
+      more_articles_html = `<div class="more_articles"><h3>More ${data.type}</h3><ul>${more_articles_items}</ul></div>`;
+    }
+  }
+
   const page = render(PAGE, {
     title: data.title,
     date: dateTime.date,
@@ -594,6 +619,7 @@ function buildFile(filePath: string): Post | null {
     sponsorBottom: config.showSponsorBlocks
       ? '<div class="sponsor-block"></div>'
       : "",
+    more_articles: more_articles_html,
   });
 
   const html = render(BASE, {
@@ -755,7 +781,21 @@ if (process.env.NODE_ENV !== "dev") {
 }
 fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
+// First pass: build all files to collect post metadata
 const posts = walk(CONTENT_DIR);
+
+// Second pass: rebuild files with more_articles data
+function rebuild_with_more_articles(dir: string) {
+  for (const file of fs.readdirSync(dir)) {
+    const full = path.join(dir, file);
+    if (fs.statSync(full).isDirectory()) {
+      rebuild_with_more_articles(full);
+    } else if (full.endsWith(".md")) {
+      buildFile(full, posts);
+    }
+  }
+}
+rebuild_with_more_articles(CONTENT_DIR);
 
 // Copy assets folder if it exists
 const assetsSourcePath = path.join(TEMPLATES_DIR, "assets");
