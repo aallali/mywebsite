@@ -89,25 +89,30 @@ main {
     }
 }
 
-/* more_articles */
 #sidebar {
     position: sticky;
     top: 32px;
     align-self: flex-start;
-    max-height: calc(100vh - 100px);
-    /* overflow-y: auto; */
+    height: calc(100vh - 100px);
+    overflow-y: auto;
     width: 100%;
-   
 }
+
+#sidebar:has(.toc) {
+    border-left: 1px solid var(--border);
+}
+#sidebar:has(.more_articles) {
+    border-right: 1px solid var(--border);
+}
+/* more_articles */
 
 .more_articles {
     background-color: var(--bg);
-    border: 1px solid var(--border);
+    /* border: 1px solid var(--border); */
     border-radius: 6px;
-    padding: 16px;
+    /* padding: 16px; */
     font-size: 14px;
     width: 100%;
-    height: 30%;
     box-sizing: border-box;
     float: inline-end;
 }
@@ -126,8 +131,8 @@ main {
 }
 
 .more_articles li {
-    margin-bottom: 12px;
-    padding-bottom: 12px;
+    margin-bottom: 6px;
+    padding-bottom: 1px;
     border-bottom: 1px solid var(--border);
 }
 
@@ -467,9 +472,7 @@ input.task-list-item-checkbox {
     top: 32px;
     align-self: flex-start;
     float: inline-start;
-
     background-color: var(--bg);
-    border: 1px solid var(--border);
     border-radius: 6px;
     padding: 12px;
     padding-right: 20px;
@@ -524,7 +527,6 @@ input.task-list-item-checkbox {
     padding: 0;
     margin: 0;
     counter-reset: toc-counter;
-    overflow-y: auto;
     overflow-x: hidden;
     flex: 1;
     min-height: 0;
