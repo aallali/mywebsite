@@ -42,7 +42,7 @@ docker compose --profile prod up -d
 
 ### 3. Customization
 - **Config**: Update `config.json` with your details.
-- **Content**: Add Markdown to `content/{blog,papers,projects}/`.
+- **Content**: Add Markdown to `content/{articles,papers,projects}/`.
 - **Updates**: `git fetch upstream && git merge upstream/main`
 
 ## Structure

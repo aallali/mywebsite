@@ -22,7 +22,7 @@
     "twitter": "https://x.com/{username}",
     "linkedin": "https://linkedin.com/{username}"
   },
-  "sections": ["blog", "papers", "projects"],
+  "sections": ["articles", "papers", "projects"],
   "showSponsorBlocks": false,
   "assets": {
     "staticFiles": [
