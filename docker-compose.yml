@@ -12,6 +12,7 @@ services:
       - ./content:/app/content
       - ./templates:/app/templates
       - ./src:/app/src
+      - /app/src/node_modules
       - ./config.json:/app/config.json
       - ./public:/app/public
     working_dir: /app/src
