@@ -94,9 +94,10 @@ main {
     position: sticky;
     top: 32px;
     align-self: flex-start;
-    max-height: calc(100vh - 40px);
-    overflow-y: auto;
+    max-height: calc(100vh - 100px);
+    /* overflow-y: auto; */
     width: 100%;
+   
 }
 
 .more_articles {
@@ -416,13 +417,16 @@ input.task-list-item-checkbox {
 
 /* Specific component styles */
 .site-footer {
-    padding-top: 10px;
+    padding: 5px 0;
     border-top: 1px solid var(--border);
     text-align: center;
     font-size: 12px;
     color: var(--text-secondary);
+    margin-top: auto;
 }
-
+.site-footer p {
+    margin-bottom: 0px;
+}
 .article-header {
     border-bottom: 1px solid var(--border);
     margin-bottom: 32px;
@@ -459,6 +463,9 @@ input.task-list-item-checkbox {
 
 /* TOC */
 .toc {
+    position: sticky;
+    top: 32px;
+    align-self: flex-start;
     float: inline-start;
 
     background-color: var(--bg);
@@ -467,8 +474,11 @@ input.task-list-item-checkbox {
     padding: 12px;
     padding-right: 20px;
     font-size: 13px;
-    width: 50%;
-    overflow-y: auto;
+    width: fit-content;
+    max-height: calc(100vh - 150px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 @media (max-width: 1200px) {
@@ -489,6 +499,7 @@ input.task-list-item-checkbox {
     justify-content: space-between;
     align-items: center;
     user-select: none;
+    flex-shrink: 0;
 }
 
 /* Hide/Show toggle */
@@ -513,6 +524,10 @@ input.task-list-item-checkbox {
     padding: 0;
     margin: 0;
     counter-reset: toc-counter;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    min-height: 0;
 }
 
 .toc>ul>li {
