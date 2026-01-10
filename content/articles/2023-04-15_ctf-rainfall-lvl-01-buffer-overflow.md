@@ -1,8 +1,8 @@
 ---
 title: "[CTF] Rainfall Level 1: Buffer Overflow via 'gets'"
 date: 2023-04-15 15:05:19
-type: blog
-tags: [blog, it, c, asm, ctf, exe, rainfall]
+type: articles
+tags: [it, c, asm, ctf, exe, rainfall]
 description: "Learn how to reverse engineer an executable by reading the Assembly code and exploit a 'gets' vulnerability using a buffer overflow attack."
 image: "/assets/ctf/lvl1-og-image.jpeg"
 ---

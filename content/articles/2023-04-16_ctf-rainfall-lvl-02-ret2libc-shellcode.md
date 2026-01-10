@@ -1,8 +1,8 @@
 ---
 title: "[CTF] Rainfall Level 2: Ret2Libc & Shellcode Injection"
 date: 2023-04-16 15:05:20
-type: blog
-tags: [blog, it, c, asm, ctf, exe, rainfall]
+type: articles
+tags: [it, c, asm, ctf, exe, rainfall]
 description: "Learn how to reverse engineer an executable by reading the Assembly code using GDB and make a Ret2Libc and Shellcode exploit by buffer overflow attack to access the root shell from a normal user."
 image: "/assets/ctf/lvl2-og-image.jpeg"
 ---

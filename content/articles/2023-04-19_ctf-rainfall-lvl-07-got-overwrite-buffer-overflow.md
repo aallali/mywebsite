@@ -1,8 +1,8 @@
 ---
 title: "[CTF] Rainfall Level 7: GOT Overwrite via Buffer Overflow"
 date: 2023-04-19 15:05:23
-type: blog
-tags: [blog, it, c, asm, ctf, exe, rainfall]
+type: articles
+tags: [it, c, asm, ctf, exe, rainfall]
 description: "Learn how to reverse engineer an executable by reading the Assembly code using GDB and make a Global Offset Table exploit by buffer overflow attack to access the root shell from normal user."
 image: "/assets/ctf/GOT-attack.png"
 ---

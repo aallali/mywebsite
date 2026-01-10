@@ -1,8 +1,8 @@
 ---
 title: "[CTF] Rainfall Level 6: Function Redirection via Buffer Overflow"
 date: 2023-04-18 15:05:22
-type: blog
-tags: [blog, it, c, asm, ctf, exe, rainfall]
+type: articles
+tags: [it, c, asm, ctf, exe, rainfall]
 description: "Learn how to reverse engineer an executable by reading the Assembly code using GDB and make a buffer overflow attack to redirect the execution of a function..."
 image: "/assets/ctf/road-shadowing.jpeg"
 ---

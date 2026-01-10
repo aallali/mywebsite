@@ -1,9 +1,9 @@
 ---
 title: "[CTF] Rainfall Level 9: C++ Instance Overwrite Exploit"
 date: 2023-04-20 23:37:00
-type: blog
-tags: [blog, it, c, asm, ctf, exe, rainfall]
-keywords: [blog, it, c, asm, ctf, exe, rainfall]
+type: articles
+tags: [it, c, asm, ctf, exe, rainfall]
+keywords: [it, c, asm, ctf, exe, rainfall]
 description: "Learn how to reverse engineer an executable by reading the Assembly code using GDB and make a Global Offset Table exploit by buffer overflow attack to access the root shell from normal user."
 image: "/assets/ctf/buffer-overflow-attacks.png"
 ---

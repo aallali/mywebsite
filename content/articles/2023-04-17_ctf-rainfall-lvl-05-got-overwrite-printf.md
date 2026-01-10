@@ -1,8 +1,8 @@
 ---
 title: "[CTF] Rainfall Level 5: GOT Overwrite via Printf"
 date: 2023-04-17 15:05:21
-type: blog
-tags: [blog, it, c, asm, ctf, exe, rainfall]
+type: articles
+tags: [it, c, asm, ctf, exe, rainfall]
 description: "Learn how to reverse engineer an executable by reading the Assembly code using GDB and exploit the Global Offset Table using a printf format string attack."
 image: "/assets/ctf/level5-stack-diagram.png"
 ---

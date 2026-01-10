@@ -1,9 +1,9 @@
 ---
 title: "Understand Binary Search Trees (BST)"
 date: 2025-01-01
-type: blog
+type: articles
 description: "Introduction to Binary Search Trees principles, covering all operations, balancing, rotations, and practical examples with code from the DB.c project."
-tags: ["blog", "DSA", "Data Structures", "Binary Search Trees (BST)", "Binary Search Tree", "Learning", "DB.c"]
+tags: ["DSA", "Data Structures", "Binary Search Trees (BST)", "Binary Search Tree", "Learning", "DB.c"]
 keywords: ["DSA", "Data Structures", "BST", "Binary Search Tree", "Learning", "DB.c"]
 image: "/assets/bst-og.png"
 ---
