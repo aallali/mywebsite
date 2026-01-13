@@ -22,9 +22,8 @@ services:
 
   # Production mode - build once and serve
   prod:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
+    image: ghcr.io/aallali/mywebsite:latest
+    pull_policy: always
     profiles:
       - prod
     networks:
@@ -35,16 +34,33 @@ services:
     environment:
       - NODE_ENV=prod
     labels:
+      - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
-      - "traefik.http.routers.tadwin.rule=Host(`tadwin.remal.dev`)"
-      - "traefik.http.routers.tadwin.entrypoints=websecure"
-      - "traefik.http.routers.tadwin.tls.certresolver=letsencrypt"
-      - "traefik.http.services.tadwin.loadbalancer.server.port=3013"
+      - "traefik.http.routers.allali.rule=Host(`allali.me`) || Host(`www.allali.me`)"
+      - "traefik.http.routers.allali.entrypoints=websecure"
+      - "traefik.http.routers.allali.tls.certresolver=letsencrypt"
+      - "traefik.http.services.allali.loadbalancer.server.port=3013"
       # Optional: HTTP to HTTPS redirect
-      - "traefik.http.routers.tadwin-http.rule=Host(`tadwin.remal.dev`)"
-      - "traefik.http.routers.tadwin-http.entrypoints=web"
-      - "traefik.http.routers.tadwin-http.middlewares=redirect-to-https"
+      - "traefik.http.routers.allali-http.rule=Host(`allali.me`) || Host(`www.allali.me`)"
+      - "traefik.http.routers.allali-http.entrypoints=web"
+      - "traefik.http.routers.allali-http.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+  # Auto-update prod image for latest version
+  watchtower:
+    image: containrrr/watchtower:latest
+    profiles:
+      - prod
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=300
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+      - WATCHTOWER_LABEL_ENABLE=true
+    restart: always
+    networks:
+      - global-net
 
 networks:
   global-net:
