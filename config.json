@@ -33,7 +33,8 @@
       "favicon-*.png",
       "favicon.svg",
       "site.webmanifest",
-      "robots.txt"
+      "robots.txt",
+      "cv.pdf"
     ]
   },
   "colors": {
