@@ -34,7 +34,7 @@
       "favicon.svg",
       "site.webmanifest",
       "robots.txt",
-      "cv.pdf"
+      "cv*.pdf"
     ]
   },
   "colors": {
