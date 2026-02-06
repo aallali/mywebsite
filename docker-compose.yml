@@ -38,7 +38,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.allali.rule=Host(`allali.me`) || Host(`www.allali.me`)"
       - "traefik.http.routers.allali.entrypoints=websecure"
-      - "traefik.http.routers.allali.tls.certresolver=letsencrypt"
+      # - "traefik.http.routers.allali.tls.certresolver=letsencrypt"
       - "traefik.http.services.allali.loadbalancer.server.port=3013"
       # Optional: HTTP to HTTPS redirect
       - "traefik.http.routers.allali-http.rule=Host(`allali.me`) || Host(`www.allali.me`)"
